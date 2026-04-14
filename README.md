@@ -46,6 +46,8 @@
 * soft delete 적용 (deleted 필드 사용)
 * 삭제된 계정 재가입 정책 적용
 * 조회 목적에 따라 Repository 메서드 분리
-* &#x20; - findByLoginId (활성 유저) 
-* &#x20; - findByLoginIdIncludingDeleted (전체 유저)
+
+&#x20; - findByLoginId (활성 유저)
+
+&#x20; - findByLoginIdIncludingDeleted (전체 유저)
 
