@@ -1,9 +1,11 @@
 package user.management.serivce;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import user.management.domain.User;
 import user.management.repository.UserRepository;
+import user.management.dto.*;
 
 public class UserService {
 	private UserRepository userRepository = new UserRepository();
@@ -19,12 +21,36 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
-	public List<User> getAllUsers(){
-		return userRepository.findAll();
+	//dto 적용전
+//	public List<User> getAllUsers(){
+//		return userRepository.findAll();
+//	}
+//	
+//	public userRepository getUser(String loginId) {
+//		return userRepository.findByLoginId(loginId);
+//	} 
+
+	public List<UserResponse> getALlUsers(){
+		List<User> users = userRepository.findAll();
+		List<UserResponse> result = new ArrayList<>();
+		
+		for (User user : users) {
+			result.add(toUserResponse(user));
+		}
+		
+		return result;
 	}
 	
-	public User getUser(String loginId) {
-		return userRepository.findByLoginId(loginId);
+	public UserResponse getUser(String loginId) {
+		validateLoginId(loginId);
+		
+		User user = userRepository.findByLoginId(loginId);
+		
+		if(user == null) {
+			return null;
+		}
+		
+		return toUserResponse(user);
 	}
 	
 	public boolean deleteUser(String loginId) {
@@ -47,6 +73,10 @@ public class UserService {
 		user.setName(name);
 		user.setPassword(password);
 		
+	}
+	
+	private UserResponse toUserResponse(User user) {
+		return new UserResponse(user.getLoginId(), user.getName());
 	}
 	
 	private void validateLoginId(String loginId) {

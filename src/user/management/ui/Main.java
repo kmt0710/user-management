@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import user.management.domain.User;
+import user.management.dto.UserResponse;
 import user.management.repository.UserRepository;
 import user.management.serivce.UserService;
 
@@ -69,7 +70,7 @@ public class Main {
 	}
 	
 	private static void showAllUsers(UserService userService) {
-		List<User> users = userService.getAllUsers();
+		List<UserResponse> users = userService.getALlUsers();
 		
 		if(users.isEmpty()) {
 			System.out.println("등록된 회원이 없습니다.");
@@ -77,25 +78,29 @@ public class Main {
 		}
 		
 		System.out.println("\n===== 전체 회원 목록 ======");
-		for(User user : users) {
+		for(UserResponse user : users) {
 			System.out.println(user);
 		}
 	}
 	
 	private static void findUser(Scanner sc, UserService userService) {
-		System.out.print("조회할 아이디: ");
-		String loginId = sc.nextLine();
-		
-		User user = userService.getUser(loginId);
-		
-		if (user == null) {
-			System.out.println("해당 아이디의 회원이 없습니다.");
-			return;
+		try {
+			System.out.print("조회할 아이디: ");
+			String loginId = sc.nextLine();
+			
+			UserResponse user = userService.getUser(loginId);
+			
+			if (user == null) {
+				System.out.println("해당 아이디의 회원이 없습니다.");
+				return;
+			}
+			
+			System.out.println("조회 결과: " + user);
+			
+			updateUser(sc, userService, user.getLoginId());
+		} catch (IllegalArgumentException e) {
+			System.out.println("조회실패: " + e.getMessage());
 		}
-		
-		System.out.println("조회 결과: " + user);
-		
-		updateUser(sc, userService, user.getLoginId());
 	}
 	
 	private static void updateUser(Scanner sc, UserService userService, String loginId) {
