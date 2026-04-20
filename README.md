@@ -51,3 +51,12 @@
 
 &#x20; - findByLoginIdIncludingDeleted (전체 유저)
 
+## \## 3강 학습 내용
+
+* User 엔티티를 내부에 그대로 노출하지 않도록 DTO 적용
+* UserResponse DTO 추가
+* 단건 조회 및 전체 조회를 DT O 반환 구조로 변경
+* 민감정보와 내부 구조 노출을 줄이기 위한 데이터 전달 방습 학습
+
+
+
