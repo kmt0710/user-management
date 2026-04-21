@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import user.management.domain.User;
+import user.management.dto.CreateUserRequest;
+import user.management.dto.UpdateUserRequest;
 import user.management.dto.UserResponse;
 import user.management.repository.UserRepository;
 import user.management.serivce.UserService;
@@ -61,7 +63,9 @@ public class Main {
 			System.out.print("이메일: ");
 			String email = sc.nextLine();
 			
-			userService.register(loginId, password, name, email);
+			CreateUserRequest request = new CreateUserRequest(loginId, password, name, email);
+			
+			userService.register(request);
 			System.out.println("회원 등록이 완료되었습니다");
 		} 
 		catch (IllegalArgumentException e) {
@@ -116,7 +120,9 @@ public class Main {
 				System.out.print("비밀번호: ");
 				String password = sc.nextLine();
 				
-				userService.updateUser(loginId, name, password);
+				UpdateUserRequest request = new UpdateUserRequest(name, password);
+				
+				userService.updateUser(loginId, request);
 				System.out.println("회원 정보가 수정되었습니다.");
 			}
 			catch(IllegalArgumentException e) {

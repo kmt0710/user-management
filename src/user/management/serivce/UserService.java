@@ -10,14 +10,17 @@ import user.management.dto.*;
 public class UserService {
 	private UserRepository userRepository = new UserRepository();
 	
-	public void register(String loginId, String password, String name, String email) {
-		validateLoginId(loginId);
-		validatePassword(password);
-		validateName(name);
-		validateEmail(email);
-		checkDuplicateLoginId(loginId);
+	public void register(CreateUserRequest request) {
+		validateLoginId(request.getLoginId());
+		validatePassword(request.getPassword());
+		validateName(request.getName());
+		validateEmail(request.getEmail());
+		checkDuplicateLoginId(request.getLoginId());
 		
-		User user = new User(loginId, password, name, email);
+		User user = new User(request.getLoginId(), 
+				request.getPassword(), request.getName(), 
+				request.getEmail());
+		
 		userRepository.save(user);
 	}
 	
@@ -58,7 +61,7 @@ public class UserService {
 		return userRepository.deleteByLoginId(loginId);
 	}
 	
-	public void updateUser(String loginId, String name, String password) {
+	public void updateUser(String loginId, UpdateUserRequest request) {
 		validateLoginId(loginId);
 		
 		User user = userRepository.findByLoginId(loginId);
@@ -67,11 +70,11 @@ public class UserService {
 			throw new IllegalArgumentException("존재하지 않는 아이디 입니다.");
 		}
 		
-		validateName(name);
-		validatePassword(password);
+		validateName(request.getName());
+		validatePassword(request.getPassword());
 		
-		user.setName(name);
-		user.setPassword(password);
+		user.setName(request.getName());
+		user.setPassword(request.getPassword());
 		
 	}
 	
